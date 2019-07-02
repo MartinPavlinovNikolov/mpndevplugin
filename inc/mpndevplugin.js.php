@@ -752,10 +752,10 @@ window.onload = function(){
         el: '#setup_order_box',
         data: {
             /* get from db with php */
-            price_per_squear_methers: 200,
-            door_price: 300,
-            door_width: 60,
-            door_height: 200,
+            price_per_squear_methers: <?php echo $price_per_squear_methers; ?>,
+            door_price: <?php echo $door_price; ?>,
+            door_width: <?php echo $door_width; ?>,
+            door_height: <?php echo $door_height; ?>,
             myUrl: '<?php echo $myUrl; ?>',
             /* get from db with php */
             avalible_colors: get_avalible_colors(),

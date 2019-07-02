@@ -31,6 +31,10 @@ class wpb_widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 		// This is where you run the code and display the output
+		$price_per_squear_methers = $instance['price_per_squere_meter'];
+		$door_price = $instance['door_price'];
+		$door_width = $instance['door_width'];
+		$door_height = $instance['door_height'];
 		$myUrl = plugin_dir_url(__DIR__).basename(__DIR__).'/MpnDevStripe.php';
 		include( MPNDEV_PLUGIN_PATH . 'inc/demo.php' );
 		include( MPNDEV_PLUGIN_PATH . 'inc/mpndevplugin.js.php' );
@@ -39,17 +43,53 @@ class wpb_widget extends WP_Widget {
 			
 	// Widget Backend 
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-		$title = $instance[ 'title' ];
+		if ( isset( $instance[ 'price_per_squere_meter' ] ) ) {
+		$price_per_squere_meter = $instance[ 'price_per_squere_meter' ];
 		}
 		else {
-		$title = __( 'New title', 'wpb_widget_domain' );
+		$price_per_squere_meter = __( '200', 'wpb_widget_domain' );
+		}
+		
+		if ( isset( $instance[ 'door_price' ] ) ) {
+		$door_price = $instance[ 'door_price' ];
+		}
+		else {
+		$door_price = __( '300', 'wpb_widget_domain' );
+		}
+		
+		if ( isset( $instance[ 'door_width' ] ) ) {
+		$door_width = $instance[ 'door_width' ];
+		}
+		else {
+		$door_width = __( '60', 'wpb_widget_domain' );
+		}
+		
+		if ( isset( $instance[ 'door_height' ] ) ) {
+		$door_height = $instance[ 'door_height' ];
+		}
+		else {
+		$door_height = __( '200', 'wpb_widget_domain' );
 		}
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo $this->get_field_id( 'price_per_squere_meter' ); ?>"><?php _e( 'Цена за квадратен метър в паундове(С включени данъци):' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'price_per_squere_meter' ); ?>" name="<?php echo $this->get_field_name( 'price_per_squere_meter' ); ?>" type="text" value="<?php echo (esc_attr( $price_per_squere_meter ) / 100); ?>" />
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'door_price' ); ?>"><?php _e( 'Цена за стандартна врата в паундове(С включени данъци):' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'door_price' ); ?>" name="<?php echo $this->get_field_name( 'door_price' ); ?>" type="text" value="<?php echo (esc_attr( $door_price ) / 100); ?>" />
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'door_width' ); ?>"><?php _e( 'Стандартна широчина на врата в сантиметри:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'door_width' ); ?>" name="<?php echo $this->get_field_name( 'door_width' ); ?>" type="text" value="<?php echo esc_attr( $door_width ); ?>" />
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'door_height' ); ?>"><?php _e( 'Стандартна височина на врата в сантиметри:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'door_height' ); ?>" name="<?php echo $this->get_field_name( 'door_height' ); ?>" type="text" value="<?php echo esc_attr( $door_height ); ?>" />
 		</p>
 		<?php 
 	}
@@ -57,7 +97,10 @@ class wpb_widget extends WP_Widget {
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['price_per_squere_meter'] = ( ! empty( $new_instance['price_per_squere_meter'] ) ) ? strip_tags( ($new_instance['price_per_squere_meter'] * 100) ) : '';
+		$instance['door_price'] = ( ! empty( $new_instance['door_price'] ) ) ? strip_tags( ($new_instance['door_price'] * 100) ) : '';
+		$instance['door_width'] = ( ! empty( $new_instance['door_width'] ) ) ? strip_tags( $new_instance['door_width'] ) : '';
+		$instance['door_height'] = ( ! empty( $new_instance['door_height'] ) ) ? strip_tags( $new_instance['door_height'] ) : '';
 		return $instance;
 	}
 
