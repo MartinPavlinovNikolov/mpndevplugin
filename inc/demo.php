@@ -1,7 +1,7 @@
 <h4 id="you-must-know-text">You MUST know</h4>
-<a id="mesure-text" href="#">&gt; Измерване на размери</a>
-<a id="mount-text" href="#">&gt; Монтиране</a>
-<a id="support-text" href="#">&gt; Указания за поддръжка</a>
+<a id="mesure-text" href="#">&gt; measurement of dimensions</a>
+<a id="mount-text" href="#">&gt; installation</a>
+<a id="support-text" href="#">&gt; maintenance instructions</a>
 <h2 id="order-text">ORDER</h2>
 <div id="setup_order_box">
     <div class="order_box">
@@ -14,7 +14,9 @@
         <section class="section-upload-location-image">
             <h4>UPLOAD IMAGE</h4>
             <p>(Upload image of the place where you will use windcurtains)</p>
-            <input id="image_of_the_place" type="file" @change="imageWasSelected" @click="resetMsg">
+            <form method="POST" enctype="multipart/form-data">
+                <input name="image_of_the_place" id="image_of_the_place" type="file" @change="imageWasSelected" @click="resetMsg" accesept="image/*">
+            </form>
             <label id="label_for_image_of_the_place" for="image_of_the_place">Choose File</label>
             <span :class="[ imageIsSelected ? 'image-is-selected' : '', 'image-is-not-selected' ]"><i class="fa fa-check"></i></span>
         </section>

@@ -72,11 +72,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -86,38 +88,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[0].value * this.dimensions[3].value) / measurment;
+                    return ((this.dimensions[0].value * this.dimensions[3].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '1.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -133,11 +135,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -147,38 +151,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[0].value * this.dimensions[1].value) / measurment;
+                    return ((this.dimensions[0].value * this.dimensions[1].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '2.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -193,41 +197,43 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let C = this.dimensions[0].value | 0;
                     let D = this.dimensions[1].value | 0;
                     let d = this.dimensions[2].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= C){
+                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
                         that.msg = this.errorMessages[2];
                     }
                     if(d >= D){
                         that.msg = this.errorMessages[1];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return ((this.dimensions[1].value + (this.dimensions[2].value * 2)) * this.dimensions[0].value) / measurment;
+                    return (((this.dimensions[1].value + (this.dimensions[2].value * 2)) * this.dimensions[0].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '3.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'd',
                         value: 0
@@ -242,41 +248,43 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let B = this.dimensions[0].value | 0;
                     let b = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= C){
+                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
                         that.msg = this.errorMessages[2];
                     }
                     if(b >= B){
                         that.msg = this.errorMessages[1];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return ((this.dimensions[0].value + (this.dimensions[1].value * 2)) * this.dimensions[2].value) / measurment;
+                    return (((this.dimensions[0].value + (this.dimensions[1].value * 2)) * this.dimensions[2].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '4.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'b',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
@@ -292,11 +300,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -306,38 +316,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[2].value * this.dimensions[3].value) / measurment;
+                    return ((this.dimensions[2].value * this.dimensions[3].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '5.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -353,11 +363,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -367,38 +379,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[2].value * this.dimensions[1].value) / measurment;
+                    return ((this.dimensions[2].value * this.dimensions[1].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '6.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -414,11 +426,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -428,38 +442,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[0].value * this.dimensions[3].value) / measurment;
+                    return ((this.dimensions[0].value * this.dimensions[3].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '7.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -475,11 +489,13 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(A >= C){
@@ -489,38 +505,38 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[0].value * this.dimensions[1].value) / measurment;
+                    return ((this.dimensions[0].value * this.dimensions[1].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '8.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -536,12 +552,14 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let b = this.dimensions[2].value | 0;
                     let C = this.dimensions[3].value | 0;
                     let D = this.dimensions[4].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(B <= D){
@@ -551,45 +569,45 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return ((this.dimensions[1].value + (this.dimensions[2].value * 2)) * this.dimensions[3].value) / measurment;
+                    return (((this.dimensions[1].value + (this.dimensions[2].value * 2)) * this.dimensions[3].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '9.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'b',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -605,12 +623,14 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let A = this.dimensions[0].value | 0;
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let d = this.dimensions[3].value | 0;
                     let D = this.dimensions[4].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= A){
+                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
                         that.msg = this.errorMessages[3];
                     }
                     if(B >= D){
@@ -620,45 +640,45 @@ window.onload = function(){
                         that.msg = this.errorMessages[2];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return ((this.dimensions[4].value + (this.dimensions[3].value * 2)) * this.dimensions[2].value) / measurment;
+                    return (((this.dimensions[4].value + (this.dimensions[3].value * 2)) * this.dimensions[2].value)  / (measurment == 'in' ? 0.15500 : 1)) / 10000;;
                 },
                 svg_name: '10.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'A',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'B',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'd',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -672,29 +692,31 @@ window.onload = function(){
                     'Is impossible for the door to start in that point.'
                 ],
                 validate: function(that, door){
+                    let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
+                    let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let C = this.dimensions[0].value | 0;
-                    if(door.included && (door.width + (door.start | 0)) >= C){
+                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
                         that.msg = this.errorMessages[1];
                     }
                     this.dimensions.map(function(dimension){
-                        dimension.validate(that);
-                    });
+                        dimension.validate(that, this);
+                    }, this);
                 },
                 area: function(measurment){
-                    return (this.dimensions[0].value * this.dimensions[1].value) / measurment;
+                    return ((this.dimensions[0].value * this.dimensions[1].value) / (measurment == 'in' ? 0.15500 : 1)) / 10000;
                 },
                 svg_name: '11.svg',
                 dimensions: [
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'C',
                         value: 0
                     },
                     {
-                        validate: function(that){
-                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : this.errorMessages[0];
+                        validate: function(that, parrent){
+                            that.msg = (Number.isInteger(this.value | 0) && this.value > 0) ? that.msg : parrent.errorMessages[0];
                         },
                         letter: 'D',
                         value: 0
@@ -726,7 +748,8 @@ window.onload = function(){
                             included: this.door_included,
                             start: this.door_starts_from,
                             width: that.door_width,
-                            height: that.door_height
+                            height: that.door_height,
+                            measurment: that.measurment
                         });
                     }
                 });
@@ -734,7 +757,7 @@ window.onload = function(){
             area: function(shapeId, measurment){
                 return (this.available_shapes.filter(function(s){
                     return s.id == shapeId
-                })[0].area(measurment) / (measurment == 1 ? 10000 : 1));
+                })[0].area(measurment));
             },
             get_door_price: function(door_price){
                 return this.door_included ? door_price : 0;
@@ -777,7 +800,7 @@ window.onload = function(){
         computed: {
             getPrice: function(){
                 let door_price = this.door_price;
-                let measurment = this.measurment == 'in' ? 1540 : 1;
+                let measurment = this.measurment;
                 let areas = this.wall_tabs.reduce(function(area, tab){
                     return area + tab.area(tab.current_shape_id, measurment);
                 }, 0);
@@ -864,6 +887,9 @@ window.onload = function(){
                 return ordered_walls;
             },
             validateWalls: function(){
+                if(this.image == null){
+                    this.msg = 'Please, upload image of the place where you will use windcurtains';
+                }
                 this.wall_tabs.map(tab => {
                     tab.validate(this);
                 });
@@ -874,6 +900,7 @@ window.onload = function(){
             showPaymentDetailsForm: function(){
                 event.preventDefault();
                 this.validateWalls();
+                let that = this;
                 if(this.msg === 'valid'){
                     let myUrl = this.myUrl;
                     this.walls = this.fillOrderWithWallsInfo();
@@ -885,19 +912,28 @@ window.onload = function(){
                       token: function(token) {
                         // Use the token to create the charge with a server-side script.
                         // You can access the token ID with `token.id`
+                        let formData = new FormData();
+                        formData.append('image', that.image);
                         let data = {
                             order: {
-                                selected_color: this.selected_color,
-                                image: this.image,
-                                measurment: this.measurment,
-                                walls: this.walls
+                                selected_color: that.selected_color,
+                                measurment: that.measurment,
+                                walls: that.walls,
+                                price: that.price
                             },
                             stripe: {
                                 email: token.email,
                                 source: token.id
                             }
                         };
-                        axios.post(myUrl, data)
+                        
+                        formData.append('data', JSON.stringify(data));
+                        axios({
+                            method: 'post',
+                            url: myUrl,
+                            data: formData,
+                            config: {headers : {'Content-type': 'multipart/form-data'}}
+                        })
                           .then(function (response) {
                             if(response != 'error'){
                                 console.log(response.data);
