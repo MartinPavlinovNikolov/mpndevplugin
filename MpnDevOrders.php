@@ -156,7 +156,7 @@
 												Стена - <?php echo ($w + 1); ?>
 											</button>
 										</p>
-										<div class="collapse" id="wall-collapse-<?php echo $wall['id']; ?>">
+										<div class="collapse <?php echo $w == 0 ? 'show' : ''; ?>" id="wall-collapse-<?php echo $wall['id']; ?>">
 											<div class="container">
 												<div class="row" style="border: 2px solid #8ecdf5;">
 													<hr>
@@ -258,7 +258,7 @@
 												Стена - <?php echo ($w + 1); ?>
 											</button>
 										</p>
-										<div class="collapse" id="wall-collapse-<?php echo $wall['id']; ?>">
+										<div class="collapse <?php echo $w == 0 ? 'show' : ''; ?>" id="wall-collapse-<?php echo $wall['id']; ?>">
 											<div class="container">
 												<div class="row" style="border: 2px solid #8ecdf5;">
 													<hr>
