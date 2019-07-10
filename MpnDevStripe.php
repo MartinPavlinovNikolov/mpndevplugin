@@ -84,6 +84,11 @@ class MpnDevStripe {
 		$image_of_the_place = $this->json['order']['image'];
 		$gateway = 'stripe';
 
+		$username = $this->json['order']['username'];
+		$email = $this->json['order']['email'];
+		$address = $this->json['order']['address'];
+		$phone = $this->json['order']['phone'];
+
 		$wpdb->insert( 
 			$wpdb->prefix . "mpn_dev_plugin_orders",
 			array(
@@ -97,6 +102,17 @@ class MpnDevStripe {
 			) 
 		);
 		$order_id = $wpdb->insert_id;
+
+		$wpdb->insert( 
+			$wpdb->prefix . "mpn_dev_plugin_customers",
+			array(
+				'order_id' => $order_id,
+				'username' => $username,
+				'email' => $email,
+				'address' => $address,
+				'phone' => $phone
+			) 
+		);
 
 		foreach($this->json['order']['walls'] as $wall){
 

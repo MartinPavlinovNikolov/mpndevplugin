@@ -37,6 +37,26 @@
 												<button style="width: 35px;height: 35px;border-radius: 50%" class="mt-2 btn btn-danger btn-sm" type="button" data-toggle="collapse" data-target="#collapseOrder<?php echo $order['id']; ?>" aria-expanded="false" aria-controls="collapseExample">X</button>
 											</div>
 										</div>
+										<div class="row mt-2">
+											<ul class="col text-left pt-3 pb-3" style="background-color: #ccc">
+							    				<li>
+							    					<span>Име:</span>
+							    					<span><?php echo $order['username'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Имейл:</span>
+							    					<span><?php echo $order['email'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Адрес:</span>
+							    					<span><?php echo $order['address'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Телефон:</span>
+							    					<span><?php echo $order['phone'] ?></span>
+							    				</li>
+											</ul>
+										</div>
 										<div class="row">
 											<div class="col text-left">
 												<p>Снимка на мястото за монтаж:</p>
@@ -128,8 +148,7 @@
 					    	<th scope="row"><?php echo $order['id']; ?></th>
 					    	<td><?php echo $order['payed'] ? number_format(($order['payed'] / 100), 2).'£' : 'Не'; ?></td>
 					    	<td><?php echo date('d-m-Y h:m:s', $order['ordered_at']); ?></td>
-					    	<td data-compleated="<?php echo $order['id']; ?>"><?php echo $order['compleated_at'] ? date('d-m-Y h:m:s', $order['compleated_at']) : '<button style="font-size: 10px;" class="btn btn-sm btn-warning mt-1" onclick="updateCompleated()" data-order="' . $order['id'] . '">маркирай като приключена</button>'; ?></td>
-					    	<td>
+					    	<td data-compleated="<?php echo $order['id']; ?>"><?php echo $order['compleated_at'] ? date('d-m-Y h:m:s', $order['compleated_at']) : '<button style="font-size: 10px;" class="btn btn-sm btn-warning mt-1" onclick="updateCompleated()" data-order="' . $order['id'] . '">маркирай като приключена</button>'; ?>
 					    	<td>
 					    		<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapseOrder<?php echo $order['id']; ?>" aria-expanded="false" aria-controls="collapseExample">виж</button>
 
@@ -139,6 +158,26 @@
 											<div class="col-1 offset-11">
 												<button style="width: 35px;height: 35px;border-radius: 50%" class="mt-2 btn btn-danger btn-sm" type="button" data-toggle="collapse" data-target="#collapseOrder<?php echo $order['id']; ?>" aria-expanded="false" aria-controls="collapseExample">X</button>
 											</div>
+										</div>
+										<div class="row mt-2">
+											<ul class="col text-left pt-3 pb-3" style="background-color: #ccc">
+							    				<li>
+							    					<span>Име:</span>
+							    					<span><?php echo $order['username'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Имейл:</span>
+							    					<span><?php echo $order['email'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Адрес:</span>
+							    					<span><?php echo $order['address'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Телефон:</span>
+							    					<span><?php echo $order['phone'] ?></span>
+							    				</li>
+											</ul>
 										</div>
 										<div class="row">
 											<div class="col text-left">
@@ -241,6 +280,26 @@
 											<div class="col-1 offset-11">
 												<button style="width: 35px;height: 35px;border-radius: 50%" class="mt-2 btn btn-danger btn-sm" type="button" data-toggle="collapse" data-target="#collapseOrder<?php echo $order['id']; ?>" aria-expanded="false" aria-controls="collapseExample">X</button>
 											</div>
+										</div>
+										<div class="row mt-2">
+											<ul class="col text-left pt-3 pb-3" style="background-color: #ccc">
+							    				<li>
+							    					<span>Име:</span>
+							    					<span><?php echo $order['username'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Имейл:</span>
+							    					<span><?php echo $order['email'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Адрес:</span>
+							    					<span><?php echo $order['address'] ?></span>
+							    				</li>
+							    				<li>
+							    					<span>Телефон:</span>
+							    					<span><?php echo $order['phone'] ?></span>
+							    				</li>
+											</ul>
 										</div>
 										<div class="row">
 											<div class="col text-left">

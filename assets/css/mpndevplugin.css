@@ -474,10 +474,10 @@
     font-size: 12px;
 }
 #setup_order_box .order-now {
-    width: 42%;
-    margin-left: 36%;
+    width: 53%;
+    margin-left: 26%;
     margin-top: 1rem;
-    margin-bottom: .5rem;
+    font-size: 10px;
 }
 .stripe-button {
     display: none !important;

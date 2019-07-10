@@ -1,6 +1,95 @@
 <script type="text/javascript">
 window.onload = function(){
 
+    jQuery('body').append(`
+        <div id="mpndevmodal" style='
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100vh;
+            background-color:rgba(0,0,0,.6);
+        '>
+            <div style='
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 300px;
+                background-color: #f5f5f7;
+                border: 2px solid white;
+                border-radius: 6px;
+                box-shadow: 0 12px 30px 0 rgba(0,0,0,.5),inset 0 1px 0 0 hsla(0,0%,100%,.65);
+                box-sizing: border-box;
+            '>
+
+                <span id="mpndevclose" style='
+                    box-sizing: border-box;
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    right: 6px;
+                    top: 6px;
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    padding: 0px 8px;
+                    color: #f51151;
+                '>x</span>
+
+                <h3 style='
+                    margin: 30px 15px;
+                    font-size: 17px;
+                    font-weight: 700;
+                    color: #000;
+                    text-shadow: 0 1px 0 #fff;
+                    text-align: center;
+                    box-sizing: border-box;
+                '>Please, fill your<br>contacts information</h3>
+
+                <input style='
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    width: 80%
+                ' id="mpndevname" type="text" required placeholder="name">
+
+                <input style='
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    width: 80%
+                ' id="mpndevemail" type="email" required placeholder="email">
+
+                <input style='
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    width: 80%
+                ' id="mpndevaddress" type="text" required placeholder="address">
+
+                <input style='
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    width: 80%
+                ' id="mpndevphone" type="text" required placeholder="phone">
+
+                <a style='
+                    box-sizing: border-box;
+                    margin-bottom: 20px;
+                ' class="button normal alternative-1 order-now" id="mpndevsubmit">order with stripe</a>
+
+                <span style='
+                    box-sizing: border-box;
+                    color: red;
+                ' id="mpndeverror"></span>
+
+            </div>
+        </div>
+    `);
+
     let get_avalible_colors = function(){
         return [
             {
@@ -78,8 +167,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -141,8 +232,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -202,8 +295,10 @@ window.onload = function(){
                     let C = this.dimensions[0].value | 0;
                     let D = this.dimensions[1].value | 0;
                     let d = this.dimensions[2].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
-                        that.msg = this.errorMessages[2];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (C - offset) || door.start < 5){
+                            that.msg = this.errorMessages[2];
+                        }
                     }
                     if(d >= D){
                         that.msg = this.errorMessages[1];
@@ -253,8 +348,10 @@ window.onload = function(){
                     let B = this.dimensions[0].value | 0;
                     let b = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
-                        that.msg = this.errorMessages[2];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (C - offset) || door.start < 5){
+                            that.msg = this.errorMessages[2];
+                        }
                     }
                     if(b >= B){
                         that.msg = this.errorMessages[1];
@@ -306,8 +403,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -369,8 +468,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -432,8 +533,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -495,8 +598,10 @@ window.onload = function(){
                     let B = this.dimensions[1].value | 0;
                     let C = this.dimensions[2].value | 0;
                     let D = this.dimensions[3].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(A >= C){
                         that.msg = this.errorMessages[1];
@@ -559,8 +664,10 @@ window.onload = function(){
                     let b = this.dimensions[2].value | 0;
                     let C = this.dimensions[3].value | 0;
                     let D = this.dimensions[4].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(B <= D){
                         that.msg = this.errorMessages[1];
@@ -630,8 +737,10 @@ window.onload = function(){
                     let C = this.dimensions[2].value | 0;
                     let d = this.dimensions[3].value | 0;
                     let D = this.dimensions[4].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (A - offset) || door.start < 5){
-                        that.msg = this.errorMessages[3];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (A - offset) || door.start < 5){
+                            that.msg = this.errorMessages[3];
+                        }
                     }
                     if(B >= D){
                         that.msg = this.errorMessages[1];
@@ -695,8 +804,10 @@ window.onload = function(){
                     let door_width = door.measurment == 'in' ? (door.width / 2.54) : door.width;
                     let offset = door.measurment == 'in' ? (5 / 2.54) : 5;
                     let C = this.dimensions[0].value | 0;
-                    if(door.included && (door_width + (door.start | 0)) > (C - offset) || door.start < 5){
-                        that.msg = this.errorMessages[1];
+                    if(door.included == true){
+                        if((door_width + (door.start | 0)) > (C - offset) || door.start < 5){
+                            that.msg = this.errorMessages[1];
+                        }
                     }
                     this.dimensions.map(function(dimension){
                         dimension.validate(that, this);
@@ -735,7 +846,7 @@ window.onload = function(){
                 'Sorry, the description cannot be longer then 255 characters.'
             ],
             validate: function(that){
-                if(this.door_included){
+                if(this.door_included == true){
                     that.msg = Number.isInteger(this.door_starts_from | 0) ? that.msg : this.errorMessages[0];
                     that.msg = (this.door_starts_from | 0) > 0 ? that.msg : this.errorMessages[1];
                 }
@@ -762,7 +873,7 @@ window.onload = function(){
             get_door_price: function(door_price){
                 return this.door_included ? door_price : 0;
             },
-            door_included: '',
+            door_included: false,
             door_starts_from: 0,
             available_shapes: get_available_shapes(),
             current_svg_name: '1.svg',
@@ -771,9 +882,14 @@ window.onload = function(){
         };
     }
 
-    new Vue({
+    let mpndevpluginvue = new Vue({
         el: '#setup_order_box',
         data: {
+            mpndevmodal: jQuery,
+            username: '',
+            email: '',
+            address: '',
+            phone: '',
             /* get from db with php */
             price_per_squear_methers: <?php echo $price_per_squear_methers; ?>,
             door_price: <?php echo $door_price; ?>,
@@ -808,7 +924,7 @@ window.onload = function(){
                     return price + tab.get_door_price(door_price);
                 }, 0);
                 let price = (((this.price_per_squear_methers * areas) + doors) / 100).toFixed(2);
-                this.price = ((this.price_per_squear_methers * areas) + doors);
+                this.price = ((this.price_per_squear_methers * areas) + doors) | 0;
                 return price;
             }
         },
@@ -862,6 +978,37 @@ window.onload = function(){
             shapeWasSelected: function(tab_index, shape_index, shape_id){
                 this.wall_tabs[tab_index].current_shape_id = shape_id;
                 this.wall_tabs[tab_index].current_svg_name = this.wall_tabs[tab_index].available_shapes[shape_index].svg_name;
+            },
+            showModalCredentials: function(){
+                this.validateWalls();
+                if(this.msg === 'valid'){
+                    this.mpndevmodal('#mpndevmodal').css('display', 'flex');
+                }
+            },
+            modalWasSubmited: function(e){
+                e.preventDefault();
+                let errMsg = '';
+                if(this.username.length < 1){
+                    errMsg = 'User name cannot be empty!';
+                }
+                if(this.email.length < 6){
+                    errMsg = 'Invalid email!';
+                }
+                if(this.address.length < 2){
+                    errMsg = 'Ops, do not forget the address!';
+                }
+                if(this.phone.match(/^[0-9\s\+]*$/) == null){
+                    errMsg = 'Telephone number can contain numbers only!';
+                }
+                if(this.phone.length < 6){
+                    errMsg = 'Telephone number cannot be less then six numbers!';
+                }
+                if(errMsg.length > 0){
+                    this.mpndevmodal('#mpndeverror').text(errMsg);
+                }else {
+                    this.mpndevmodal('#mpndevmodal').css('display', 'none');
+                    this.showPaymentDetailsForm();
+                }
             },
             fillOrderWithWallsInfo: function(){
                 let ordered_walls = [];
@@ -919,7 +1066,11 @@ window.onload = function(){
                                 selected_color: that.selected_color,
                                 measurment: that.measurment,
                                 walls: that.walls,
-                                price: that.price
+                                price: that.price,
+                                username: that.username,
+                                email: that.email,
+                                address: that.address,
+                                phone: that.phone
                             },
                             stripe: {
                                 email: token.email,
@@ -957,5 +1108,34 @@ window.onload = function(){
             }
         }
     });
+
+    jQuery('#mpndevname').on("change paste keyup", function(e){
+        mpndevpluginvue.mpndevmodal('#mpndeverror').text('');
+        mpndevpluginvue.username = e.target.value;
+    });
+    jQuery('#mpndevemail').on("change paste keyup", function(e){
+        mpndevpluginvue.mpndevmodal('#mpndeverror').text('');
+        mpndevpluginvue.email = e.target.value;
+    });
+    jQuery('#mpndevaddress').on("change paste keyup", function(e){
+        mpndevpluginvue.mpndevmodal('#mpndeverror').text('');
+        mpndevpluginvue.address = e.target.value;
+    });
+    jQuery('#mpndevphone').on("change paste keyup", function(e){
+        mpndevpluginvue.mpndevmodal('#mpndeverror').text('');
+        mpndevpluginvue.phone = e.target.value;
+    });
+    jQuery('#mpndevsubmit').on("click", function(e){
+        mpndevpluginvue.modalWasSubmited(e);
+    });
+    jQuery('#mpndevmodal').on("click", function(e){
+        if(jQuery(e.target).attr('id') == 'mpndevmodal'){
+            jQuery(this).css('display', 'none');
+        }
+    });
+    jQuery('#mpndevclose').on("click", function(){
+        jQuery('#mpndevmodal').css('display', 'none');
+    });
+
 }
 </script>

@@ -9,6 +9,7 @@ function mpn_dev_plugin_db_table_install () {
    global $wpdb;
 
    $table_name = $wpdb->prefix . "mpn_dev_plugin_orders"; 
+   $table_name1 = $wpdb->prefix . "mpn_dev_plugin_customers"; 
    $table_name2 = $wpdb->prefix . "mpn_dev_plugin_walls"; 
    $table_name3 = $wpdb->prefix . "mpn_dev_plugin_dimensions"; 
 
@@ -24,6 +25,16 @@ function mpn_dev_plugin_db_table_install () {
 		measurment text(55) NOT NULL,
 		image_of_the_place text(255) NOT NULL,
 		gateway text(55) NOT NULL,
+		PRIMARY KEY  (id)
+	) $charset_collate;";
+
+	$customers = "CREATE TABLE IF NOT EXISTS $table_name1 (
+		id INT NOT NULL AUTO_INCREMENT,
+		order_id INT NOT NULL,
+		username text(255) NOT NULL,
+		email text(255) NOT NULL,
+		address text(255) NOT NULL,
+		phone text(255) NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
@@ -46,6 +57,7 @@ function mpn_dev_plugin_db_table_install () {
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $orders );
+	dbDelta( $customers );
 	dbDelta( $walls );
 	dbDelta( $dimensions );
 }
@@ -121,6 +133,7 @@ class MpnDevPlugin extends WP_Widget {
 		global $wpdb;
 
 		$table_orders = $wpdb->prefix . "mpn_dev_plugin_orders";
+		$table_customers = $wpdb->prefix . "mpn_dev_plugin_customers";
 		$table_walls = $wpdb->prefix . "mpn_dev_plugin_walls";
 		$table_dimensions = $wpdb->prefix . "mpn_dev_plugin_dimensions";
 
@@ -138,6 +151,13 @@ class MpnDevPlugin extends WP_Widget {
 			$orders[$o]['measurment'] = $order['measurment'];
 			$orders[$o]['image_of_the_place'] = $order['image_of_the_place'];
 			$orders[$o]['gateway'] = $order['gateway'];
+
+			$customer = $wpdb->get_results("SELECT * FROM `$table_customers` WHERE `order_id`='$order_id'", ARRAY_A)[0];
+			$orders[$o]['username'] = $customer['username'];
+			$orders[$o]['email'] = $customer['email'];
+			$orders[$o]['address'] = $customer['address'];
+			$orders[$o]['phone'] = $customer['phone'];
+
 			foreach($wpdb->get_results("SELECT * FROM `$table_walls` WHERE `order_id` = '$order_id' ORDER BY `id` ASC", ARRAY_A) as $w => $wall){
 				$wall_id = $wall['id'];
 				$orders[$o]['walls'][$w]['id'] = $wall['id'];

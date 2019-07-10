@@ -80,7 +80,7 @@
                                     <label @click="resetMsg">Yes, include door</label>
                                 </div>
                             </div>
-                            <div v-if="wall_tab.door_included" class="section-door-dimentions">
+                            <div v-if="wall_tab.door_included == true" class="section-door-dimentions">
                                 <label>Тhe door is located from</br> the bottom leftmost part,</br> at a distance:
                                 <input type="number" name="door-dimentions" placeholder="90" v-model="wall_tab.door_starts_from" @click="resetMsg"><span>{{ measurment }}</span></label>
                             </div>
@@ -104,7 +104,9 @@
         <p class="current-price-text">CURRENT PRICE</p>
         <h3 class="current-price-value">{{ getPrice }}£</h3>
         <h6 class="current-price-vat">(VAT 20% included)</h6>
-        <a class="button normal alternative-1 order-now" href="#" @click="showPaymentDetailsForm">ORDER NOW</a>
+
+        <a type="button" class="button normal alternative-1 order-now" @click="showModalCredentials">START YOUR ORDER</a>
+
         <p class="text-danger">{{(msg !== 'valid' ? msg : '')}}</p>
         <form action="/checkout" method="POST">
             <div class="stripe-button"></div>
