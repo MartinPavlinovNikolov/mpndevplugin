@@ -140,7 +140,7 @@
 					    </tr>
 					</thead>
 					<tbody>
-						<?php 
+						<?php
 						if(count($incompleatedOrders) > 0){
 							foreach($incompleatedOrders as $order){
 						?>
@@ -262,8 +262,8 @@
 					    </tr>
 					</thead>
 					<tbody>
-						<?php 
-						if(count($compleatedOrders > 0)){
+						<?php
+						if(count($compleatedOrders) > 0){
 							foreach($compleatedOrders as $order){
 						?>
 					    <tr class='<?php echo $order['compleated_at'] ? "table-success" : "table-danger"; ?>'>
