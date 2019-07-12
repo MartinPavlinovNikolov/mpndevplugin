@@ -79,7 +79,7 @@ window.onload = function(){
                 <a style='
                     box-sizing: border-box;
                     margin-bottom: 20px;
-                ' class="button normal alternative-1 order-now" id="mpndevsubmit">order with stripe</a>
+                ' class="button button-primary normal alternative-1 order-now" id="mpndevsubmit">order with stripe</a>
 
                 <span style='
                     box-sizing: border-box;
@@ -1053,7 +1053,7 @@ window.onload = function(){
                     this.walls = this.fillOrderWithWallsInfo();
 
                     let stripe = StripeCheckout.configure({
-                      key: 'pk_test_lVZX6Oqmev8YxYF9Ub1a4TNp00tlWJ7s94',
+                      key: '<?= MPNDEV_STRIPE_PUBLIC_KEY ?>',
                       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
                       locale: 'auto',
                       token: function(token) {
@@ -1085,15 +1085,15 @@ window.onload = function(){
                             data: formData,
                             config: {headers : {'Content-type': 'multipart/form-data'}}
                         })
-                          .then(function (response) {
+                        .then(function (response) {
                             if(response != 'error'){
-                                console.log(response.data);
+                                that.showPositiveFeedback();
                             } else {
-                                console.log('error');
+                                that.showFailFeedback();
                             }
                         })
-                          .catch(function (error) {
-                            console.log(error);
+                        .catch(function (error) {
+                            that.showFailFeedback();
                         });
                       }
                     });
@@ -1105,6 +1105,100 @@ window.onload = function(){
                       currency: 'gbp'
                     });
                 }
+            },
+            showPositiveFeedback: function(){
+                jQuery('body').append(`
+                    <div id="mpndevmodalsuccess" style='
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100vh;
+                        background-color:rgba(0,0,0,.6);
+                    ' onclick="return jQuery('#mpndevmodalsuccess').remove();">
+                        <div style='
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: column;
+                            width: 300px;
+                            background-color: #f5f5f7;
+                            border: 2px solid white;
+                            border-radius: 6px;
+                            box-shadow: 0 12px 30px 0 rgba(0,0,0,.5),inset 0 1px 0 0 hsla(0,0%,100%,.65);
+                            box-sizing: border-box;
+                        '>
+
+                            <h3 style='
+                                margin: 30px 15px;
+                                font-size: 17px;
+                                font-weight: 700;
+                                color: #000;
+                                text-shadow: 0 1px 0 #fff;
+                                text-align: center;
+                                box-sizing: border-box;
+                            '>Thanks for your purchase</h3>
+
+                            <a style='
+                                box-sizing: border-box;
+                                margin-bottom: 20px;
+                            ' class="button button-primary normal alternative-1 order-now">close</a>
+
+                        </div>
+                    </div>
+                `);
+            },
+            showFailFeedback: function(){
+                jQuery('body').append(`
+                    <div id="mpndevmodalfail" style='
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100vh;
+                        background-color:rgba(0,0,0,.6);
+                    ' onclick="return jQuery('#mpndevmodalfail').remove();">
+                        <div style='
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: column;
+                            width: 300px;
+                            background-color: #f5f5f7;
+                            border: 2px solid white;
+                            border-radius: 6px;
+                            box-shadow: 0 12px 30px 0 rgba(0,0,0,.5),inset 0 1px 0 0 hsla(0,0%,100%,.65);
+                            box-sizing: border-box;
+                        '>
+
+                            <h3 style='
+                                margin: 30px 15px;
+                                font-size: 17px;
+                                font-weight: 700;
+                                color: #000;
+                                text-shadow: 0 1px 0 #fff;
+                                text-align: center;
+                                box-sizing: border-box;
+                            '>Something went wrong.<br>Please, try again.</h3>
+
+                            <a style='
+                                box-sizing: border-box;
+                                margin-bottom: 20px;
+                            ' class="button normal alternative-1 order-now">OK</a>
+
+                        </div>
+                    </div>
+                `);
             }
         }
     });

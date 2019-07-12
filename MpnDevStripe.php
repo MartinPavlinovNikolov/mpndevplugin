@@ -1,8 +1,6 @@
 <?php
 namespace MpnDevStripe;
 
-use Stripe\{Stripe, Customer, Charge};
-
 require __DIR__ . '/vendor/autoload.php';
 $path = $_SERVER['DOCUMENT_ROOT'];
 
@@ -11,14 +9,19 @@ include_once $path . '/wp-load.php';
 include_once $path . '/wp-includes/wp-db.php';
 include_once $path . '/wp-includes/pluggable.php';
 
+use Stripe\{Stripe, Customer, Charge};
+use MpnDevMail\MpnDevMail;
+
 class MpnDevStripe {
 
 	private $json;
+	private $mail;
 
 	public function __construct()
 	{
 		$this->json = json_decode(stripslashes($_POST['data']), true);
 		$this->json['order']['image'] = "uploaded_images/" . basename($_FILES['image']['tmp_name'] . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+		$this->mail = new MpnDevMail(true);
 	}
 
 	private function validate()
@@ -36,10 +39,44 @@ class MpnDevStripe {
 		return $this;
 	}
 
+	private function sendEmailToCustomer()
+	{
+		$this->mail->sendToCustomerOnOrder([
+			'sender' => 'contact@windproofcurtains.co.uk',
+			'to' => $this->json['order']['email'],
+			'subject' => 'Successfull order',
+			'body' => $this->getMailContentForCustomerOnCustomerMakeOrder(),
+			'alt_body' => strip_tags($this->getMailContentForCustomerOnCustomerMakeOrder())
+		]);
+		return $this->resetMail();
+	}
+
 	private function sendEmailToOwner()
 	{
-		//wp_mail('martin_nikolov.89@abv.bg', 'нова поръчка', 'здрасти'); todo: setup wp smtp
+		$this->mail->sendOnCustomerMakeOrder([
+			'sender' => 'contact@windproofcurtains.co.uk',
+			'to' => 'contact@windproofcurtains.co.uk',
+			'subject' => 'Клиент е наравил поръчка',
+			'body' => $this->getMailContentForOwnerOnCustomerMakeOrder(),
+			'alt_body' => strip_tags($this->getMailContentForOwnerOnCustomerMakeOrder())
+		]);
+		return $this->resetMail();
+	}
+
+	private function resetMail()
+	{
+		$this->mail = new MpnDevMail(true);
 		return $this;
+	}
+
+	private function getMailContentForCustomerOnCustomerMakeOrder()
+	{
+		return 'Thanks for choosing us. We will contact you as soon as possible!';
+	}
+
+	private function getMailContentForOwnerOnCustomerMakeOrder()
+	{
+		return 'Клиент е направил поръчка и е <b>платил</b>';
 	}
 
 	public function store()
@@ -49,9 +86,10 @@ class MpnDevStripe {
 			 ->saveImageOfThePlace()
 			 ->saveOrderInDB()
 			 ->sendEmailToOwner()
+			 ->sendEmailToCustomer()
 			 ->returnResponse();
 
-		Stripe::setApiKey('sk_test_vp02kYk98HLycQE9dOe6p62p00cxA91GvY');/*secret key*/
+		Stripe::setApiKey( MPNDEV_STRIPE_SECRET_KEY );/*secret key*/
 		
 		$customer = Customer::create([
 			'email' => $this->json['stripe']['email'],
