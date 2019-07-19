@@ -1,26 +1,33 @@
 <?php
-namespace MpnDevMail;
+namespace MpnDev;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 class MpnDevMail extends PHPMailer {
 
-	public $mpn_host = MPNDEV_MAIL_HOST;
-	public $mpn_my_username = MPNDEV_MAIL_USERNAME;
-	public $mpn_password = MPNDEV_MAIL_PASSWORD;
-	public $mpn_port = TESTING_MPNDEV_MAIL_PORT;
+	public $mpn_host;
+	public $mpn_my_username;
+	public $mpn_password;
+	public $mpn_port;
 
 	public function __construct($auth)
 	{
 		parent::__construct($auth);
 		$this->CharSet = 'UTF-8';
-		
+		global $wpdb;
+		$table_setup = $wpdb->prefix . "mpn_dev_plugin_setup";
+		$q = $wpdb->get_results("SELECT * FROM `$table_setup`", ARRAY_A);
 		if(get_site_url() === "http://wordpress.local"){
-			$this->mpn_host = TESTING_MPNDEV_MAIL_HOST;
-			$this->mpn_my_username = TESTING_MPNDEV_MAIL_USERNAME;
-			$this->mpn_password = TESTING_MPNDEV_MAIL_PASSWORD;
-			$this->mpn_port = TESTING_MPNDEV_MAIL_PORT;
+			$this->mpn_host = 'smtp.mailtrap.io';
+			$this->mpn_my_username = 'e7a37e0739cdf7';
+			$this->mpn_password = '85c8e9259654b0';
+			$this->mpn_port = 465;
+		} else {
+			$this->mpn_host = $q['mail_host'];
+			$this->mpn_my_username = $q['mail_username'];;
+			$this->mpn_password = $q['mail_password'];;
+			$this->mpn_port = (int) $q['mail_port'];;
 		}
 	}
 
@@ -37,7 +44,7 @@ class MpnDevMail extends PHPMailer {
 		    $this->Port       = $this->mpn_port;// TCP port to connect to
 
 		    //Recipients
-		    $this->setFrom($data['sender'], MPNDEV_MAIL_USERNAME);
+		    $this->setFrom($data['sender'], $this->mpn_my_username);
 		    $this->addAddress($data['to']);// Add a recipient
 
 		    // Content

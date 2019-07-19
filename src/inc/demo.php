@@ -39,7 +39,7 @@
                 <nav>
                     <ul>
                         <li v-for="(wall_tab, wall_tab_index) in wall_tabs" :class="'wall-tab' + (wall_tab.id)">
-                            <label :for="'wall-tab' + wall_tab.id" @click="tab_was_changed(wall_tab.id, wall_tab_index)" :class="{ 'wall-tab-is-active': (current_wall_tab_id == wall_tab.id) }">Wall {{ (wall_tab.id) }}</label>
+                            <label :for="'wall-tab' + wall_tab.id" @click="tab_was_changed(wall_tab.id, wall_tab_index)" :class="{ 'wall-tab-is-active': (current_wall_tab_id == wall_tab.id) }">Wall {{ (wall_tab_index + 1) }}</label>
                         </li>
                         <button class="add-wall" @click="addWallTab"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; ADD WALL</button>
                     </ul>
@@ -94,7 +94,7 @@
                     <div class="section-paging">
                         <div class="section-paging-page" @click="changeToLeftTab">&lt;</div>
 
-                        <div v-for="(wall_tab, wall_tab_index) in wall_tabs" class="section-paging-page" :class="(current_wall_tab_id == wall_tab.id) ? 'selected-page' : ''" @click="tab_was_changed(wall_tab.id, wall_tab_index)">{{ wall_tab.id }}</div>
+                        <div v-for="(wall_tab, wall_tab_index) in wall_tabs" class="section-paging-page" :class="(current_wall_tab_id == wall_tab.id) ? 'selected-page' : ''" @click="tab_was_changed(wall_tab.id, wall_tab_index)">{{ wall_tab_index + 1 }}</div>
 
                         <div class="section-paging-page" @click="changeToRightTab">&gt;</div>
                     </div>

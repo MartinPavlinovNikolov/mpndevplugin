@@ -1,7 +1,7 @@
 <?php
-namespace MpnDevStripe;
+namespace MpnDev;
 
-require __DIR__ . '/vendor/autoload.php';
+require '../vendor/autoload.php';
 $path = $_SERVER['DOCUMENT_ROOT'];
 
 include_once $path . '/wp-config.php';
@@ -9,8 +9,10 @@ include_once $path . '/wp-load.php';
 include_once $path . '/wp-includes/wp-db.php';
 include_once $path . '/wp-includes/pluggable.php';
 
-use Stripe\{Stripe, Customer, Charge};
-use MpnDevMail\MpnDevMail;
+use Stripe\Stripe;
+use Stripe\Customer;
+use Stripe\Charge;
+use MpnDev\MpnDevMail;
 
 class MpnDevStripe {
 
@@ -44,7 +46,7 @@ class MpnDevStripe {
 		$this->mail->sendToCustomerOnOrder([
 			'sender' => 'contact@windproofcurtains.co.uk',
 			'to' => $this->json['order']['email'],
-			'subject' => 'Successfull order',
+			'subject' => $this->getMailSubjectForCustomerOnCustomerMakeOrder(),
 			'body' => $this->getMailContentForCustomerOnCustomerMakeOrder(),
 			'alt_body' => strip_tags($this->getMailContentForCustomerOnCustomerMakeOrder())
 		]);
@@ -69,9 +71,18 @@ class MpnDevStripe {
 		return $this;
 	}
 
+	private function getMailSubjectForCustomerOnCustomerMakeOrder()
+	{
+		global $wpdb;
+		$table_email_templates = $wpdb->prefix . "mpn_dev_plugin_email_templates";
+		return $wpdb->get_results("SELECT * FROM `$table_email_templates`", ARRAY_A)[0]['subject'];
+	}
+
 	private function getMailContentForCustomerOnCustomerMakeOrder()
 	{
-		return 'Thanks for choosing us. We will contact you as soon as possible!';
+		global $wpdb;
+		$table_email_templates = $wpdb->prefix . "mpn_dev_plugin_email_templates";
+		return $wpdb->get_results("SELECT * FROM `$table_email_templates`", ARRAY_A)[0]['body'];
 	}
 
 	private function getMailContentForOwnerOnCustomerMakeOrder()
@@ -88,8 +99,10 @@ class MpnDevStripe {
 			 ->sendEmailToOwner()
 			 ->sendEmailToCustomer()
 			 ->returnResponse();
-
-		Stripe::setApiKey( MPNDEV_STRIPE_SECRET_KEY );/*secret key*/
+		global $wpdb;
+		$table_setup = $wpdb->prefix . "mpn_dev_plugin_setup";
+		$stripe_secret_key = $wpdb->get_results("SELECT * FROM `$table_setup`", ARRAY_A)[0]['stripe_secret_key'];
+		Stripe::setApiKey( $stripe_secret_key );/*secret key*/
 		
 		$customer = Customer::create([
 			'email' => $this->json['stripe']['email'],

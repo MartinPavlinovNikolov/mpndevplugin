@@ -79,7 +79,9 @@ window.onload = function(){
                 <a style='
                     box-sizing: border-box;
                     margin-bottom: 20px;
-                ' class="button button-primary normal alternative-1 order-now" id="mpndevsubmit">order with stripe</a>
+                ' class="button button-primary normal alternative-1 order-now" id="mpndevsubmitstripe">Credit/Debit Card</a>
+
+                <div id="mpndevsubmitpaypal"></div>
 
                 <span style='
                     box-sizing: border-box;
@@ -895,7 +897,8 @@ window.onload = function(){
             door_price: <?php echo $door_price; ?>,
             door_width: <?php echo $door_width; ?>,
             door_height: <?php echo $door_height; ?>,
-            myUrl: '<?php echo $myUrl; ?>',
+            stripeUrl: '<?php echo $stripeUrl; ?>',
+            paypalUrl: '<?php echo $paypalUrl; ?>',
             /* get from db with php */
             avalible_colors: get_avalible_colors(),
             wall_tabs: [get_wall_tab()],
@@ -985,8 +988,11 @@ window.onload = function(){
                     this.mpndevmodal('#mpndevmodal').css('display', 'flex');
                 }
             },
-            modalWasSubmited: function(e){
-                e.preventDefault();
+            modalWasSubmited: function(e, paymentGateWay, actions){
+                if(e != null){
+                    e.preventDefault();
+                }
+
                 let errMsg = '';
                 if(this.username.length < 1){
                     errMsg = 'User name cannot be empty!';
@@ -1007,7 +1013,18 @@ window.onload = function(){
                     this.mpndevmodal('#mpndeverror').text(errMsg);
                 }else {
                     this.mpndevmodal('#mpndevmodal').css('display', 'none');
-                    this.showPaymentDetailsForm();
+                    if(paymentGateWay === 'stripe'){
+                        this.showStripeForm();
+                    } else if(paymentGateWay === 'paypal') {
+                        let that = this;
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: (that.price / 100)
+                                }
+                            }]
+                        });
+                    }
                 }
             },
             fillOrderWithWallsInfo: function(){
@@ -1044,16 +1061,16 @@ window.onload = function(){
             resetMsg: function(){
                 this.msg = 'valid';
             },
-            showPaymentDetailsForm: function(){
+            showStripeForm: function(){
                 event.preventDefault();
                 this.validateWalls();
                 let that = this;
                 if(this.msg === 'valid'){
-                    let myUrl = this.myUrl;
+                    let stripeUrl = this.stripeUrl;
                     this.walls = this.fillOrderWithWallsInfo();
 
                     let stripe = StripeCheckout.configure({
-                      key: '<?= MPNDEV_STRIPE_PUBLIC_KEY ?>',
+                      key: '<?= $stripe_public_key ?>',
                       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
                       locale: 'auto',
                       token: function(token) {
@@ -1081,7 +1098,7 @@ window.onload = function(){
                         formData.append('data', JSON.stringify(data));
                         axios({
                             method: 'post',
-                            url: myUrl,
+                            url: stripeUrl,
                             data: formData,
                             config: {headers : {'Content-type': 'multipart/form-data'}}
                         })
@@ -1105,6 +1122,65 @@ window.onload = function(){
                       currency: 'gbp'
                     });
                 }
+            },
+            triggerPaypal: function(){
+
+                let that = this;
+
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        return that.modalWasSubmited(null, 'paypal', actions);
+                    },
+                    onApprove: function(data, actions) {
+                        // Capture the funds from the transaction
+                        return actions.order.capture().then(function(details) {
+                            //Save data to server and show a success message to your buyer
+                            that.validateWalls();
+                            if(that.msg === 'valid'){
+                                let paypalUrl = that.paypalUrl;
+                                that.walls = that.fillOrderWithWallsInfo();
+                                let formData = new FormData();
+                                formData.append('image', that.image);
+                                let data = {
+                                    order: {
+                                        selected_color: that.selected_color,
+                                        measurment: that.measurment,
+                                        walls: that.walls,
+                                        price: that.price,
+                                        username: that.username,
+                                        email: that.email,
+                                        address: that.address,
+                                        phone: that.phone
+                                    }
+                                };
+                                formData.append('data', JSON.stringify(data));
+
+                                axios({
+                                    method: 'post',
+                                    url: paypalUrl,
+                                    data: formData,
+                                    config: {headers : {'Content-type': 'multipart/form-data'}}
+                                })
+                                .then(function (response) {
+                                    if(response != 'error'){
+                                        that.showPositiveFeedback();
+                                    } else {
+                                        that.showFailFeedback();
+                                    }
+                                })
+                                .catch(function (error) {
+                                    that.showFailFeedback();
+                                });
+                            }
+                        });
+                    }
+                }).render('#mpndevsubmitpaypal');
+
+//paypal Client ID
+//AcJcCA-CNQxsWNU5a1coBsL6nVS0vBVW1UUsxphGyF_2hi-YxsqBXS6uMNChpPXGl0qeuO9c_UmF8USG
+//paypal Secret
+//ED92OKReYpmG1dBwecryqj3ul0k3G5HEhEQucUlRm-gj0KAJ6fP2U-Y7xC-YNyZ8l8AqiKER85q4Waql
+
             },
             showPositiveFeedback: function(){
                 jQuery('body').append(`
@@ -1219,9 +1295,17 @@ window.onload = function(){
         mpndevpluginvue.mpndevmodal('#mpndeverror').text('');
         mpndevpluginvue.phone = e.target.value;
     });
-    jQuery('#mpndevsubmit').on("click", function(e){
-        mpndevpluginvue.modalWasSubmited(e);
+
+
+    //stripe button
+    jQuery('#mpndevsubmitstripe').on("click", function(e){
+        mpndevpluginvue.modalWasSubmited(e, 'stripe');
     });
+    //paypal button
+    mpndevpluginvue.triggerPaypal();
+
+
+
     jQuery('#mpndevmodal').on("click", function(e){
         if(jQuery(e.target).attr('id') == 'mpndevmodal'){
             jQuery(this).css('display', 'none');
@@ -1230,6 +1314,6 @@ window.onload = function(){
     jQuery('#mpndevclose').on("click", function(){
         jQuery('#mpndevmodal').css('display', 'none');
     });
-
 }
 </script>
+<script src="https://www.paypal.com/sdk/js?client-id=AcJcCA-CNQxsWNU5a1coBsL6nVS0vBVW1UUsxphGyF_2hi-YxsqBXS6uMNChpPXGl0qeuO9c_UmF8USG&currency=GBP"></script>
